@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <users>
+    <user id="3e28ab4c-8422-43bf-8e9a-3cb11fbc9fe6" username="admin" password="admin"></user>
+    <user id="c594ead5-70fc-440b-ac77-70369bad3433" username="operator" password="operator"></user>
+  </users>
+  <channels>
+    <channel>Support</channel>
+    <channel>Global</channel>
+  </channels>
+</configuration>

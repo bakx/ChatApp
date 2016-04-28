@@ -1,37 +1,118 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Let's chat!";
 }
 
-    <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" class="form-control" id="name" placeholder="Enter your name">
-    </div>
-    <div class="form-group">
-        <div id="response"></div>
-    </div>
+<br />
 
-    <div class="form-group">
-        <label for="message">Message</label>
-        <textarea rows="2" class="form-control" id="message" placeholder="Type your message"></textarea>
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Welcome</a></li>
+    <li role="presentation"><a href="#chat" aria-controls="chat" role="tab" data-toggle="tab">General Chat Room</a></li>
+    <li role="presentation"><a href="#support" aria-controls="support" role="tab" data-toggle="tab">Support</a></li>
+</ul>
+
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade in active" id="home">...</div>
+    <div role="tabpanel" class="tab-pane fade" id="chat">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+            <div id="response"></div>
+        </div>
+        <div class="form-group">
+            <label for="message">Message</label>
+            <textarea rows="2" class="form-control" id="message" placeholder="Type your message"></textarea>
+        </div>
+        <button id="btnSend" type="button" class="btn btn-default">Send</button>
     </div>
-    <button id="btnSend" type="button" class="btn btn-default">Send</button>
+    <div role="tabpanel" class="tab-pane fade" id="support">
+        <div id="supportForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="supportName" placeholder="Enter your name">
+            </div>
+
+            <div class="form-group">
+                <button id="btnLeaveRoom" type="button" class="btn btn-primary">Leave Room</button>
+                <button id="btnJoinRoom" type="button" class="btn btn-primary">Join Room</button>
+            </div>
+
+            <div class="form-group">
+                <div id="supportResponse"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea rows="2" class="form-control" id="supportMessage" placeholder="Type your message"></textarea>
+            </div>
+            <button id="btnSupportSend" type="button" class="btn btn-default">Send</button>
+        </div>
+    </div>
+</div>
 
 @section scripts {
-<script>
+    <script>
 
-    var hub = $.connection.chat;
+        var hub = $.connection.chat;
+        var roomID = "";
 
-    // Message Received
-    hub.client.sendMessage = function (name, message) {
-        $("#response").append("<p><b>" + name + "</b>: " + message + "</p>");
-    };
+        //
+        // General Chat 
+        //
 
-    $("#btnSend").on("click", function () {
-        hub.server.sendMessage(
-            $("#name").val(),
-            $("#message").val()
-        );
-    });
-</script>
+        //Message Received
+        hub.client.sendMessage = function (name, message) {
+            $("#response").append("<p><b>" + name + "</b>: " + message + "</p>");
+        };
+
+        // Handle send event
+        $("#btnSend").on("click", function () {
+            hub.server.sendMessage(
+                $("#name").val(),
+                $("#message").val()
+            );
+        });
+
+        //
+        // Support
+        //
+
+        hub.client.addChatMessage = function (message) {
+            $("#supportResponse").append("<p>" + message + "</p>");
+        };
+
+        // Join a room
+        $("#btnJoinRoom").on("click", function () {
+            hub.server.joinRoom(
+                "support"
+            );
+        });
+
+        // Leave a room
+        $("#btnLeaveRoom").on("click", function () {
+            hub.server.leaveRoom(
+                roomID
+            );
+        });
+
+        // Handle send event
+        $("#btnSupportSend").on("click", function () {
+            hub.server.sendMessageToRoom(
+                roomID,
+                $("#supportMessage").val()
+            );
+        });
+       
+        // Handle System Messages
+        hub.client.systemMessage = function (message) {
+            // Determine the system message
+            var messageParts = message.split('|');
+
+            if (messageParts[0] == "JOIN_ROOM") {
+                roomID = messageParts[1];
+            }
+        };
+
+    </script>
 }

@@ -54,14 +54,12 @@
                 // usage: transport: ['webSockets', 'longPolling']
             })
             .done(function () {
-                console.log('here');
                 $("#connectionDetails").html("Connected with ID " + $.connection.hub.id + " through " + $.connection.hub.transport.name);
             })
             .fail(function () {
                 $("#connectionDetails").html("Could not Connect!");
             });
         });
-
     </script>
 
     @RenderSection("scripts", required: false)
