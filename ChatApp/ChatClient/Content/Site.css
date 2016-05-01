@@ -1,18 +1,37 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿.chatMessageHolder {
+     overflow-y: scroll;
+     max-height: 500px;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+.chatMessage {
+    margin: 10px 0px;
+    clear: both;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
-}
+    .chatMessage .name {
+        float: left;
+        font-weight: bold;
+    }
 
+        .chatMessage .name::after {
+            content: ':';
+            padding-right: 5px;
+        }
+
+    .chatMessage .message {
+        float: left;
+    }
+
+    .chatMessage .date:before {
+    }
+
+    .chatMessage .date {
+        clear: both;
+        font-size: 0.8em;
+    }
+
+.chatSendButton {
+    max-width: 100%;
+    float: right;
+    margin-top: 15px;
+}

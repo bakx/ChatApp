@@ -135,6 +135,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ChatWindow.html" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -157,6 +158,7 @@
     <None Include="scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\bootstrap.min.js" />
+    <Content Include="scripts\chat.js" />
     <Content Include="scripts\jquery-2.2.3.js" />
     <Content Include="scripts\jquery-2.2.3.min.js" />
     <Content Include="scripts\jquery.signalR-2.2.0.js" />
@@ -167,6 +169,14 @@
     <Content Include="scripts\jquery.validate.unobtrusive.js" />
     <Content Include="scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="scripts\modernizr-2.8.3.js" />
+    <Content Include="scripts\react\react-dom-server.js" />
+    <Content Include="scripts\react\react-dom-server.min.js" />
+    <Content Include="scripts\react\react-dom.js" />
+    <Content Include="scripts\react\react-dom.min.js" />
+    <Content Include="scripts\react\react-with-addons.js" />
+    <Content Include="scripts\react\react-with-addons.min.js" />
+    <Content Include="scripts\react\react.js" />
+    <Content Include="scripts\react\react.min.js" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />

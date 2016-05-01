@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="Content/Site.css" rel="stylesheet" />
+    <script src="scripts/react/react.js"></script>
+    <script src="scripts/react/react-dom.js"></script>
+</head>
+<body>
+
+    <br />
+
+    <div class="container">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">{{chat_title}}</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <div class="col-md-12 chatMessageHolder" id="0000000">
+                        <div class="chatMessage">
+                            <div class="name">Name</div>
+                            <div class="message">Chat Message</div>
+                            <div class="date">01/01/2016 9:45:06 PM</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <textarea rows="2" class="form-control"></textarea>
+                    </div>
+                    <div class="col-md-2">
+                        <input class="btn btn-primary chatSendButton" value="Send" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        var chatMessages = [];
+
+        setInterval(function () {
+            chatMessages.push({ id: chatMessages.length, name: 'Name', message: 'Chat Message', date: new Date() });
+        }, 10000);
+
+    </script>
+
+    <script src="scripts/chat.js"></script>
+
+</body>
+</html>
