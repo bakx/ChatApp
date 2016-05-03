@@ -4,10 +4,10 @@
     <title></title>
     <meta charset="utf-8" />
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="Content/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="Content/Site.css" rel="stylesheet" />
     <script src="scripts/react/react.js"></script>
     <script src="scripts/react/react-dom.js"></script>
+
 </head>
 <body>
 
@@ -16,7 +16,7 @@
     <div class="container">
 
         <div class="panel panel-primary">
-            <div class="panel-heading">{{chat_title}}</div>
+            <div class="panel-heading">Let's chat!</div>
             <div class="panel-body">
                 <div class="form-group">
                     <div class="col-md-12 chatMessageHolder" id="0000000">
@@ -36,16 +36,16 @@
                     </div>
                 </div>
             </div>
+            <div class="panel-footer">Panel footer</div>
         </div>
     </div>
 
     <script>
 
-        var chatMessages = [];
-
         setInterval(function () {
             chatMessages.push({ id: chatMessages.length, name: 'Name', message: 'Chat Message', date: new Date() });
-        }, 10000);
+            ReactDOM.render(React.createElement(ChatMessages, { messages: chatMessages }), document.getElementById('0000000'));
+        }, 1000);
 
     </script>
 

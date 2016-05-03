@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace ChatClient.Controllers
@@ -12,6 +9,22 @@ namespace ChatClient.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+        public ActionResult ChatRoomAuthenticate(string name)
+        {
+            ViewBag.Name = name;
+
+            Models.ChatRoom model = new Models.ChatRoom();
+            model.ID = Guid.NewGuid().ToString();
+            model.Title = "Let's chat!";
+
+            return View("_PartialChatRoom", model);
+        }
+
+        public ActionResult ChatRoom()
+        {
+            return View();
+
         }
     }
 }

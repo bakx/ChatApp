@@ -2,29 +2,39 @@
     ViewBag.Title = "Let's chat!";
 }
 
-<br />
+<div class="container">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Welcome</a></li>
+        <li role="presentation"><a href="#chat" aria-controls="chat" role="tab" data-toggle="tab">General Chat Room</a></li>
+        <li role="presentation"><a href="#support" aria-controls="support" role="tab" data-toggle="tab">Support</a></li>
+    </ul>
+</div>
 
-<ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Welcome</a></li>
-    <li role="presentation"><a href="#chat" aria-controls="chat" role="tab" data-toggle="tab">General Chat Room</a></li>
-    <li role="presentation"><a href="#support" aria-controls="support" role="tab" data-toggle="tab">Support</a></li>
-</ul>
+<div class="container">
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active" id="home">..........................</div>
+        <div role="tabpanel" class="tab-pane fade" id="chat">
 
-<div class="tab-content">
-    <div role="tabpanel" class="tab-pane fade in active" id="home">...</div>
-    <div role="tabpanel" class="tab-pane fade" id="chat">
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" placeholder="Enter your name">
+            @using (Ajax.BeginForm("ChatRoomAuthenticate", new { Controller = "Home" },
+                    new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "chat", OnSuccess = "authenticateSuccess", OnFailure = "authenticateFail" },
+                    new { id = "authenticateForm", @class = "form-horizontal", role = "form" }
+                ))
+            {
+                @Html.Partial("_PartialAuthenticate")
+            }
+
+            <script>
+
+                function joinSuccess() {
+                    console.log("joinSuccess not implemented");
+                }
+
+                function joinFail() {
+                    console.log("joinFail not implemented");
+                }
+
+            </script>
         </div>
-        <div class="form-group">
-            <div id="response"></div>
-        </div>
-        <div class="form-group">
-            <label for="message">Message</label>
-            <textarea rows="2" class="form-control" id="message" placeholder="Type your message"></textarea>
-        </div>
-        <button id="btnSend" type="button" class="btn btn-default">Send</button>
     </div>
     <div role="tabpanel" class="tab-pane fade" id="support">
         <div id="supportForm">
@@ -51,68 +61,51 @@
     </div>
 </div>
 
-@section scripts {
-    <script>
+    @section scripts {
+        <script>
 
-        var hub = $.connection.chat;
-        var roomID = "";
+            var hub = $.connection.chat;
+            var roomID = "";
 
-        //
-        // General Chat 
-        //
+            //
+            // Support
+            //
 
-        //Message Received
-        hub.client.sendMessage = function (name, message) {
-            $("#response").append("<p><b>" + name + "</b>: " + message + "</p>");
-        };
+            hub.client.addChatMessage = function (message) {
+                $("#supportResponse").append("<p>" + message + "</p>");
+            };
 
-        // Handle send event
-        $("#btnSend").on("click", function () {
-            hub.server.sendMessage(
-                $("#name").val(),
-                $("#message").val()
-            );
-        });
+            // Join a room
+            $("#btnJoinRoom").on("click", function () {
+                hub.server.joinRoom(
+                    "support"
+                );
+            });
 
-        //
-        // Support
-        //
+            // Leave a room
+            $("#btnLeaveRoom").on("click", function () {
+                hub.server.leaveRoom(
+                    roomID
+                );
+            });
 
-        hub.client.addChatMessage = function (message) {
-            $("#supportResponse").append("<p>" + message + "</p>");
-        };
+            // Handle send event
+            $("#btnSupportSend").on("click", function () {
+                hub.server.sendMessageToRoom(
+                    roomID,
+                    $("#supportMessage").val()
+                );
+            });
 
-        // Join a room
-        $("#btnJoinRoom").on("click", function () {
-            hub.server.joinRoom(
-                "support"
-            );
-        });
+            // Handle System Messages
+            hub.client.systemMessage = function (message) {
+                // Determine the system message
+                var messageParts = message.split('|');
 
-        // Leave a room
-        $("#btnLeaveRoom").on("click", function () {
-            hub.server.leaveRoom(
-                roomID
-            );
-        });
+                if (messageParts[0] == "JOIN_ROOM") {
+                    roomID = messageParts[1];
+                }
+            };
 
-        // Handle send event
-        $("#btnSupportSend").on("click", function () {
-            hub.server.sendMessageToRoom(
-                roomID,
-                $("#supportMessage").val()
-            );
-        });
-       
-        // Handle System Messages
-        hub.client.systemMessage = function (message) {
-            // Determine the system message
-            var messageParts = message.split('|');
-
-            if (messageParts[0] == "JOIN_ROOM") {
-                roomID = messageParts[1];
-            }
-        };
-
-    </script>
-}
+        </script>
+    }

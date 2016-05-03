@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ChatServer
@@ -10,7 +9,8 @@ namespace ChatServer
     public class ChatHub : Hub
     {
         static string JOINED_ROOM = "{0} has entered the room";
-        static string CHAT_MESSAGE = "<p><b>{0}</b>: {1}</p>";
+        static string CHAT_MESSAGE = "{{\"name\" : \"{0}\", \"message\" : \"{1}\", \"date\" : \"{2}\"}}";
+        static string SYSTEM_MESSAGE_UNKNOWN_USER = "UNKNOWN_USER";
         static string SYSTEM_MESSAGE_JOIN_ROOM = "JOIN_ROOM|{0}";
 
         public override Task OnConnected()
@@ -32,6 +32,19 @@ namespace ChatServer
             return base.OnDisconnected(stopCalled);
         }
 
+        /// <summary>
+        /// Sets the name of the chatroom client
+        /// </summary>
+        /// <param name="name"></param>
+        public void SetName(string name)
+        {
+            Client client = GetClient(Context.ConnectionId);
+
+            if (client != null)
+                client.Name = name;
+        }
+
+
         public void Authenticate(string username, string password)
         {
             if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
@@ -49,6 +62,17 @@ namespace ChatServer
                         SystemMessage(client, "Unknown User Name or Bad Password");
                 }
             }
+        }
+
+
+        /// <summary>
+        /// General chat room
+        /// </summary>
+        /// <param name="message"></param>
+        public void SendMessage(string message)
+        {
+            // Send the message 
+            Clients.All.SendMessage(GetChatMessage(message));
         }
 
         /// <summary>
@@ -101,11 +125,6 @@ namespace ChatServer
             Clients.Group(room).addChatMessage(System.Web.HttpUtility.HtmlEncode(chatMessage));
         }
 
-        public void SendMessage(string name, string message)
-        {
-            Clients.All.SendMessage(name, System.Web.HttpUtility.HtmlEncode(message));
-        }
-
         /// <summary>
         /// Handles system messages
         /// </summary>
@@ -114,6 +133,15 @@ namespace ChatServer
         public void SystemMessage(Client client, string message)
         {
             Clients.Client(client.ConnectionID).SystemMessage(System.Web.HttpUtility.HtmlEncode(message));
+        }
+
+        public string GetChatMessage(string message)
+        {
+            // Get the client, based on connection ID
+            Client client = GetClient(Context.ConnectionId);
+
+            // Prepare the message
+            return client == null || client.Name == null ? SYSTEM_MESSAGE_UNKNOWN_USER : string.Format(CHAT_MESSAGE, client.Name, message, DateTime.Now.ToLongTimeString());
         }
 
         // Helper functions
