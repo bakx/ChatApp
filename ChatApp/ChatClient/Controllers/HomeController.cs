@@ -10,16 +10,24 @@ namespace ChatClient.Controllers
         {
             return View();
         }
-        public ActionResult ChatRoomAuthenticate(string name)
+
+        public ActionResult GeneralChat(string name)
         {
+            // Require authentication if name is not set
+            if (name == null)
+                return View("Authenticate");
+
             ViewBag.Name = name;
 
             Models.ChatRoom model = new Models.ChatRoom();
             model.ID = Guid.NewGuid().ToString();
             model.Title = "Let's chat!";
 
-            return View("_PartialChatRoom", model);
+            return View(model);
         }
+
+
+  
 
         public ActionResult ChatRoom()
         {

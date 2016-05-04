@@ -188,7 +188,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="scripts\jquery-2.2.3.min.map" />
     <Content Include="Views\Home\_PartialChatRoom.cshtml" />
-    <Content Include="Views\Home\_PartialAuthenticate.cshtml" />
+    <Content Include="Views\Home\Authenticate.cshtml" />
+    <Content Include="Views\Home\GeneralChat.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -140,8 +140,16 @@ namespace ChatServer
             // Get the client, based on connection ID
             Client client = GetClient(Context.ConnectionId);
 
-            // Prepare the message
-            return client == null || client.Name == null ? SYSTEM_MESSAGE_UNKNOWN_USER : string.Format(CHAT_MESSAGE, client.Name, message, DateTime.Now.ToLongTimeString());
+            if (client == null || client.Name == null)
+                return SYSTEM_MESSAGE_UNKNOWN_USER;
+            else
+            {
+                message = System.Web.HttpUtility.HtmlEncode(message);
+                message = message.Replace("\n", "\\n");
+
+                // Prepare the message
+                return string.Format(CHAT_MESSAGE, client.Name, System.Web.HttpUtility.HtmlEncode(message), DateTime.Now.ToLongTimeString());
+            }
         }
 
         // Helper functions

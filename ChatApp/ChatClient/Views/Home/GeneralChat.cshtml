@@ -1,0 +1,65 @@
+﻿@model ChatClient.Models.ChatRoom
+
+@{
+    ViewBag.Title = @Model.Title;
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">@Model.Title</div>
+    <div class="panel-body">
+        <div class="form-group">
+            <div id="@Model.ID" class="col-md-12 chatMessageHolder"></div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <textarea id="@(Model.ID)_txtMessage" rows="2" class="form-control"></textarea>
+            </div>
+            <div class="col-md-2">
+                <button id="@(Model.ID)_btnSend" class="btn btn-primary chatSendButton" type="button">Send</button>
+            </div>
+        </div>
+    </div>
+    <div id="@(Model.ID)_footer" class="panel-footer"></div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $.connection.chat.client.sendMessage = function (message) {
+            message = JSON.parse(message);
+            message.id = chatMessages.length;   // Add an unique ID (required by React)
+            chatMessages.push(message);         // Add the chat message to the array that contains all chat messages (due React)
+            ReactDOM.render(React.createElement(ChatMessages, { messages: chatMessages }), document.getElementById('@Model.ID'));
+        };
+
+        $.connection.hub.url = "http://www.chat-server.local/signalr";
+
+        $.connection.hub
+        .start({
+            // You can use the following values for specifying the transport method:
+
+            // webSockets
+            // foreverFrame
+            // serverSentEvents
+            // longPolling
+            //
+            // usage: transport: ['webSockets', 'longPolling']
+        })
+        .done(function () {
+            // Send the name
+            $.connection.chat.server.setName("@(ViewBag.Name)");
+
+            $("#@(Model.ID)_footer").html("Connected with ID " + $.connection.hub.id + " through " + $.connection.hub.transport.name);
+        })
+        .fail(function () {
+            $("#@(Model.ID)_footer").html("Could not Connect!");
+        });
+    });
+
+    $("#@(Model.ID)_btnSend").on("click", function () {
+        $.connection.chat.server.sendMessage(
+            $("#@(Model.ID)_txtMessage").val()
+        );
+    });
+
+</script>

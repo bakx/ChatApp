@@ -2,40 +2,11 @@
     ViewBag.Title = "Let's chat!";
 }
 
-<div class="container">
-    <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Welcome</a></li>
-        <li role="presentation"><a href="#chat" aria-controls="chat" role="tab" data-toggle="tab">General Chat Room</a></li>
-        <li role="presentation"><a href="#support" aria-controls="support" role="tab" data-toggle="tab">Support</a></li>
-    </ul>
-</div>
 
 <div class="container">
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active" id="home">..........................</div>
-        <div role="tabpanel" class="tab-pane fade" id="chat">
-
-            @using (Ajax.BeginForm("ChatRoomAuthenticate", new { Controller = "Home" },
-                    new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "chat", OnSuccess = "authenticateSuccess", OnFailure = "authenticateFail" },
-                    new { id = "authenticateForm", @class = "form-horizontal", role = "form" }
-                ))
-            {
-                @Html.Partial("_PartialAuthenticate")
-            }
-
-            <script>
-
-                function joinSuccess() {
-                    console.log("joinSuccess not implemented");
-                }
-
-                function joinFail() {
-                    console.log("joinFail not implemented");
-                }
-
-            </script>
         </div>
-    </div>
     <div role="tabpanel" class="tab-pane fade" id="support">
         <div id="supportForm">
             <div class="form-group">

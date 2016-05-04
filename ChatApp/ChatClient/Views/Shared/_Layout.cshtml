@@ -1,17 +1,33 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
     <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/css/bootstrap")
+    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
 
-    <div class="container">
-        @RenderBody()
+    <nav class="navbar navbar-default navbar-inverse">
+        <div class="container">
+            <div class="navbar-collapse collapse" id="navbar-main">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="@Url.Action("GeneralChat", "Home")">General Chatroom</a></li>
+                    <li><a href="@Url.Action("Support", "Home")">Support</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-body">
+        <div class="container">
+            @RenderBody()
+        </div>
     </div>
 
     <footer>
@@ -20,7 +36,6 @@
         </div>
     </footer>
 
-    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/unobtrusive")
     @Scripts.Render("~/bundles/bootstrap")
@@ -32,13 +47,7 @@
 
     <script src="~/scripts/chat.js"></script>
 
-    <script>
-
-       
-    </script>
-
     @RenderSection("scripts", required: false)
-
 
 </body>
 </html>
