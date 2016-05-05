@@ -1,11 +1,20 @@
 ﻿@model ChatClient.Models.ChatRoom
 
 @{
-    Layout = null;
+    ViewBag.Title = @Model.Title;
 }
 
 <div class="panel panel-primary">
     <div class="panel-heading">@Model.Title</div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <label for="Name">Name</label>
+            <input type="text" class="form-control" id="@(Model.ID)_txtRoom" placeholder="Enter your name">
+        </div>
+        <div class="col-md-2">
+            <button id="@(Model.ID)_btnJoinRoom" class="btn btn-primary chatSendButton" type="button">Join Room</button>
+        </div>
+    </div>
     <div class="panel-body">
         <div class="form-group">
             <div id="@Model.ID" class="col-md-12 chatMessageHolder"></div>
@@ -25,7 +34,7 @@
 <script>
     $(document).ready(function () {
 
-        $.connection.chat.client.sendMessage = function (message) {
+        $.connection.support.client.addChatMessage = function (message) {
             message = JSON.parse(message);
             message.id = chatMessages.length;   // Add an unique ID (required by React)
             chatMessages.push(message);         // Add the chat message to the array that contains all chat messages (due React)
@@ -47,7 +56,7 @@
         })
         .done(function () {
             // Send the name
-            $.connection.chat.server.setName("@(ViewBag.Name)");
+            $.connection.support.server.setName("@(ViewBag.Name)");
 
             $("#@(Model.ID)_footer").html("Connected with ID " + $.connection.hub.id + " through " + $.connection.hub.transport.name);
         })
@@ -56,10 +65,17 @@
         });
     });
 
+    $("#@(Model.ID)_btnJoinRoom").on("click", function () {
+        $.connection.support.server.joinRoom(
+              $("#@(Model.ID)_txtRoom").val(), true
+            );
+    });
+
     $("#@(Model.ID)_btnSend").on("click", function () {
-        $.connection.chat.server.sendMessage(
+        $.connection.support.server.sendMessageToRoom(
             $("#@(Model.ID)_txtMessage").val()
         );
     });
+
 
 </script>

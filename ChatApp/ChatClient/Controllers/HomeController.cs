@@ -26,13 +26,35 @@ namespace ChatClient.Controllers
             return View(model);
         }
 
-
-  
-
-        public ActionResult ChatRoom()
+        public ActionResult SupportChat(string name)
         {
-            return View();
+            // Require authentication if name is not set
+            if (name == null)
+                return View("Authenticate");
 
+            ViewBag.Name = name;
+
+            Models.ChatRoom model = new Models.ChatRoom();
+            model.ID = Guid.NewGuid().ToString();
+            model.Title = "Support chat!";
+
+            return View(model);
         }
+
+        public ActionResult SupportAgent(string name)
+        {
+            // Require authentication if name is not set
+            if (name == null)
+                return View("Authenticate");
+
+            ViewBag.Name = name;
+
+            Models.ChatRoom model = new Models.ChatRoom();
+            model.ID = Guid.NewGuid().ToString();
+            model.Title = "Let's provide support!";
+
+            return View(model);
+        }
+
     }
 }

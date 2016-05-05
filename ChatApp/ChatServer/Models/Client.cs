@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChatServer
+﻿namespace ChatServer
 {
     public enum ClientType : int
     {
@@ -34,5 +28,10 @@ namespace ChatServer
         /// Client type
         /// </summary>
         public ClientType Type { get; set; }
+
+        /// <summary>
+        /// Quick work around to keep track in which support room this client is
+        /// </summary>
+        public string SupportChatRoomID { get; set; }
     }
 }

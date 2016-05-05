@@ -30,7 +30,18 @@ namespace ChatServer
             }
         }
 
+        public Client GetClient(string connectionID)
+        {
+            return this.clients.Find(c => c.ConnectionID == connectionID);
+        }
+
+        public int GetClients()
+        {
+            return this.clients.Count;
+        }
+
         public List<Client> clients = new List<Client>();
+        public List<Client> groups = new List<Client>();
 
         public static void LoadConfig()
         {
